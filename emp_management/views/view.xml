@@ -1,0 +1,183 @@
+<odoo>
+	
+	<!-- Form views of emp.master models -->
+	<record id = "view_emp_master_form" model="ir.ui.view">
+		<field name="name">Employee management form view</field>
+		<field name="model">emp.master</field>
+		<field name="arch" type="xml">
+			<form string="Employee Management">
+                <notebook>
+                    <page string="Employee Personal Info">
+                        <group>
+                        <field name="name"/>
+					    <field name="phone_no"/>
+					    <field name="birth_date"/>
+					    <field name="age"/>
+                        <field name="skill_id"/>
+                        </group>
+                    </page>
+                    <page string="Company related Info">
+                         <group>
+                        <field name="joining_date"/>
+                        <field name="department_id"/>
+                         </group>
+                    </page>
+                    <page string="Salary Info">
+                        <group>
+                        <field name="gross_sal"/>
+					    <field name="allowance"/>
+					    <field name="deduction"/>
+					    <field name="net_salary" readonly="1" force_save="1"/>
+					    <field name="net_salary_compute"/>
+                        </group>
+                    </page>
+                </notebook>
+
+
+
+                 <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+                <div class="oe_button_box" name="button_box">
+                    <button type="object" name="action_show_days" class="oe_stat_button" icon="fa-calendar">
+                    <field name="days_in_company" widget="statinfo" string="Days"/>
+                    </button>
+                </div>
+			</form>
+		</field>
+	</record>
+
+	<!-- emp.master list -->
+	<record id="view_emp_master_list" model="ir.ui.view">
+    <field name="name">Employee management list view</field>
+    <field name="model">emp.master</field>
+    <field name="arch" type="xml">
+        <tree string="Employee Management">
+            <field name="name"/>
+            <field name="phone_no"/>
+			<field name="birth_date"/>
+             <field name="joining_date"/>
+            <field name="gross_sal"/>
+			<field name="net_salary_compute"/>
+			<field name="department_id"/>
+			<field name="skill_id"/>
+        </tree>
+    </field>
+</record>
+
+	<!-- emp.master kanban -->
+
+	<record id="view_emp_master_kanban" model="ir.ui.view">
+    <field name="name">Employee management Kanban view</field>
+    <field name="model">emp.master</field>
+    <field name="arch" type="xml">
+        <kanban class="o_kanban_mobile">
+
+            <field name="name"/>
+            <field name="department_id"/>
+            <templates>
+
+                <t t-name="kanban-box">
+                    <div t-attf-class="oe_kanban_global_click">
+                        <div class="row">
+                            <div class="col-8">
+                                <field class="fw-bolder" name="name"/>
+                            </div>
+                            <div class="col-4">
+                                <field name="gross_sal" widget="badge"/>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <strong> Department: </strong>
+                            <field name="department_id"/>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+
+    <!-- emp.department form -->
+	<record id = "view_emp_department_form" model="ir.ui.view">
+		<field name="name">Employee department form view</field>
+		<field name="model">emp.department</field>
+		<field name="arch" type="xml">
+			<form string="Employee Department">
+				<group>
+					<field name="name"/>
+					<field name="emp_id"/>
+				</group>
+			</form>
+		</field>
+	</record>
+
+     <!-- emp.department list -->
+	<record id="view_emp_department_list" model="ir.ui.view">
+    <field name="name">Employee department list view</field>
+    <field name="model">emp.department</field>
+    <field name="arch" type="xml">
+        <tree string="Employee department">
+            <field name="name"/>
+			<field name="emp_id"/>
+        </tree>
+    </field>
+</record>
+
+     <!-- emp.skill form -->
+    <record id = "view_emp_skill_form" model="ir.ui.view">
+		<field name="name">Employee skill form view</field>
+		<field name="model">emp.skill</field>
+		<field name="arch" type="xml">
+			<form string="Employee Skill">
+				<group>
+					<field name="name"/>
+					<field name="emp_id"/>
+				</group>
+			</form>
+		</field>
+	</record>
+
+    <!-- emp.skill list -->
+	<record id="view_emp_skill_list" model="ir.ui.view">
+    <field name="name">Employee skill list view</field>
+    <field name="model">emp.skill</field>
+    <field name="arch" type="xml">
+        <tree string="Employee Skill">
+            <field name="name"/>
+			<field name="emp_id"/>
+        </tree>
+    </field>
+</record>
+
+
+    <record id="action_emp_master" model="ir.actions.act_window">
+        <field name="name">Employees</field>
+        <field name="res_model">emp.master</field>
+        <field name="view_mode">list,form,kanban</field>
+    </record>
+
+	<record id="action_emp_department" model="ir.actions.act_window">
+        <field name="name">Department</field>
+        <field name="res_model">emp.department</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+	<record id="action_emp_skill" model="ir.actions.act_window">
+        <field name="name">Skill</field>
+        <field name="res_model">emp.skill</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_emp_management_main" name="Employee Management"/>
+    <menuitem id = "menu_emp_management_emp_list" name="Employees" action="action_emp_master" parent="menu_emp_management_main" />
+	<menuitem id = "menu_emp_department_emp_list" name="Department" action="action_emp_department" parent="menu_emp_management_main" />
+	<menuitem id = "menu_emp_skill_emp_list" name="Skill" action="action_emp_skill" parent="menu_emp_management_main" />
+    <menuitem id="menu_emp_master_wizard"
+          name="Upload"
+          action="action_emp_master_wizard"
+          parent="menu_emp_management_main"/>
+
+</odoo>
